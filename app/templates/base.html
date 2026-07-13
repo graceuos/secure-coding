@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head><title>중고거래 플랫폼</title></head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</body>
+</html>
