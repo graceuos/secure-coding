@@ -1,17 +1,12 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>전체 상품 목록</h2>
+{% extends 'base.html' %}{% block content %}<h2>전체 상품 목록</h2>
 <a href="{{ url_for('products.product_new') }}">+ 새 상품 등록</a>
 <a href="{{ url_for('auth.mypage') }}">마이페이지</a>
 <a href="{{ url_for('chat.chat_global') }}">전체 채팅</a>
 <a href="{{ url_for('chat.chat_list') }}">내 채팅 목록</a>
-<ul>
-{% for item in items %}
-    <li>
-        <a href="{{ url_for('products.product_detail', product_id=item.id) }}">
-            {{ item.title }} - {{ item.price }}원
-        </a>
-    </li>
-{% endfor %}
-</ul>
-{% endblock %}
+<a href="{{ url_for('users.my_products') }}">내 상품 관리</a>
+{% if current_user.is_admin %}<a href="{{ url_for('admin.dashboard') }}">관리자 페이지</a>{% endif %}
+<form method="GET">
+<input type="text" name="q" value="{{ q }}" placeholder="상품명 검색">
+<button type="submit">검색</button>
+</form>
+<ul>{% for item in items %}<li><a href="{{ url_for('products.product_detail', product_id=item.id) }}">{{ item.title }} - {{ item.price }}원</a> (판매자: <a href="{{ url_for('users.user_profile', user_id=item.seller_id) }}">{{ item.seller.username }}</a>)</li>{% endfor %}</ul>{% endblock %}

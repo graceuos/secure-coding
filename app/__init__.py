@@ -13,12 +13,9 @@ socketio = SocketIO()
 def create_app():
     app = Flask(__name__)
 
-    # 보안 포인트 1: SECRET_KEY는 세션 암호화, CSRF 토큰 생성에 쓰입니다.
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-temporary-key-change-me')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///market.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    # 보안 포인트 2: 세션 쿠키를 JS로 못 읽게 막고(HttpOnly)
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
@@ -42,6 +39,18 @@ def create_app():
 
     from app.chat import chat_bp
     app.register_blueprint(chat_bp)
+
+    from app.reports import reports_bp
+    app.register_blueprint(reports_bp)
+
+    from app.users import users_bp
+    app.register_blueprint(users_bp)
+
+    from app.wallet import wallet_bp
+    app.register_blueprint(wallet_bp)
+
+    from app.admin import admin_bp
+    app.register_blueprint(admin_bp)
 
     with app.app_context():
         db.create_all()

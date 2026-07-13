@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}<h2>{{ profile_user.username }}님의 프로필</h2>
+<p>소개글: {{ profile_user.bio }}</p>
+{% if profile_user.id != current_user.id %}
+<a href="{{ url_for('wallet.transfer', user_id=profile_user.id) }}">송금하기</a> |
+<a href="{{ url_for('reports.report_user', user_id=profile_user.id) }}">신고하기</a>
+{% endif %}
+<h3>등록 상품</h3>
+<ul>{% for p in products %}<li><a href="{{ url_for('products.product_detail', product_id=p.id) }}">{{ p.title }} - {{ p.price }}원</a></li>{% endfor %}</ul>
+<a href="{{ url_for('products.product_list') }}">목록으로</a>{% endblock %}

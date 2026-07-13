@@ -1,0 +1,12 @@
+```html
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ target_name }} 신고하기</h2>
+<form method="POST">
+	{{ form.hidden_tag() }}
+	{{ form.reason.label }}<br>
+	{{ form.reason() }}<br>
+	{{ form.submit() }}
+</form>
+{% endblock %}
+```

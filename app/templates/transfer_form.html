@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block content %}<h2>{{ receiver.username }}님에게 송금</h2>
+<p>내 잔액: {{ current_user.balance }}원</p>
+<form method="POST">{{ form.hidden_tag() }}{{ form.amount.label }} {{ form.amount() }}<br>{{ form.submit() }}</form>{% endblock %}

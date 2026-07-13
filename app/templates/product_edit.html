@@ -1,0 +1,2 @@
+{% extends 'base.html' %}{% block content %}<h2>{{ product.title }} 수정</h2>
+<form method="POST">{{ form.hidden_tag() }}{{ form.title.label }} {{ form.title() }}<br>{{ form.description.label }} {{ form.description() }}<br>{{ form.price.label }} {{ form.price() }}<br>{{ form.submit() }}</form>{% endblock %}

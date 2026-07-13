@@ -1,0 +1,23 @@
+{% extends 'base.html' %}{% block content %}<h2>관리자 대시보드</h2>
+<h3>유저 목록</h3>
+<table border="1">
+<tr><th>id</th><th>username</th><th>report_count</th><th>active</th><th>action</th></tr>
+{% for u in users %}
+<tr><td>{{ u.id }}</td><td>{{ u.username }}</td><td>{{ u.report_count }}</td><td>{{ u.is_active_account }}</td>
+<td><form method="POST" action="{{ url_for('admin.toggle_user_active', user_id=u.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">토글</button></form></td></tr>
+{% endfor %}
+</table>
+<h3>상품 목록</h3>
+<table border="1">
+<tr><th>id</th><th>title</th><th>seller</th><th>report_count</th><th>blocked</th><th>action</th></tr>
+{% for p in products %}
+<tr><td>{{ p.id }}</td><td>{{ p.title }}</td><td>{{ p.seller.username }}</td><td>{{ p.report_count }}</td><td>{{ p.is_blocked }}</td>
+<td>
+<form method="POST" action="{{ url_for('admin.toggle_product_block', product_id=p.id) }}" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">차단토글</button></form>
+<form method="POST" action="{{ url_for('admin.admin_delete_product', product_id=p.id) }}" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">삭제</button></form>
+</td></tr>
+{% endfor %}
+</table>
+<h3>최근 신고 내역</h3>
+<ul>{% for r in reports %}<li>[{{ r.target_type }}] target_id={{ r.target_id }} - {{ r.reason }} (신고자: {{ r.reporter.username }})</li>{% endfor %}</ul>
+{% endblock %}
