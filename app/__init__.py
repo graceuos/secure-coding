@@ -3,10 +3,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
+from flask_socketio import SocketIO
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 csrf = CSRFProtect()
+socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
@@ -23,7 +25,8 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
-    csrf.init_app(app)  # 보안 포인트 11: 전체 앱에 CSRF 보호 적용
+    csrf.init_app(app)
+    socketio.init_app(app)
 
     from app.models import User
 
@@ -37,8 +40,10 @@ def create_app():
     from app.products import products_bp
     app.register_blueprint(products_bp)
 
+    from app.chat import chat_bp
+    app.register_blueprint(chat_bp)
+
     with app.app_context():
         db.create_all()
 
     return app
-

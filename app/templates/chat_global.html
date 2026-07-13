@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>전체 채팅</h2>
+<a href="{{ url_for('products.product_list') }}">상품 목록으로</a>
+
+<div id="messages" style="border:1px solid #ccc; height:300px; overflow-y:scroll; padding:8px;">
+{% for m in history %}
+    <p><b>{{ m.sender.username }}</b> ({{ m.created_at.strftime('%H:%M') }}): {{ m.content }}</p>
+{% endfor %}
+</div>
+
+<input type="text" id="msg_input" maxlength="500" placeholder="메시지 입력">
+<button id="send_btn">전송</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    const messagesDiv = document.getElementById('messages');
+
+    socket.on('receive_global_message', function(data) {
+        const p = document.createElement('p');
+        p.innerHTML = '<b></b> (' + data.time + '): ';
+        p.querySelector('b').textContent = data.sender; // 보안: textContent로 넣어 XSS 방지
+        const span = document.createElement('span');
+        span.textContent = data.content; // 보안 포인트 14: innerHTML 대신 textContent로 넣어 XSS 방지
+        p.appendChild(span);
+        messagesDiv.appendChild(p);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+
+    document.getElementById('send_btn').onclick = function() {
+        const input = document.getElementById('msg_input');
+        const content = input.value.trim();
+        if (!content) return;
+        socket.emit('send_global_message', {content: content});
+        input.value = '';
+    };
+</script>
+{% endblock %}

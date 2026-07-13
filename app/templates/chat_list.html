@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>내 채팅 목록</h2>
+<a href="{{ url_for('products.product_list') }}">상품 목록으로</a>
+<ul>
+{% for c in conversations %}
+	<li>
+		<a href="{{ url_for('chat.chat_private', product_id=c.product.id, other_user_id=c.other.id) }}">
+			[{{ c.product.title }}] {{ c.other.username }}
+		</a>
+	</li>
+{% else %}
+	<li>아직 대화한 상대가 없습니다.</li>
+{% endfor %}
+</ul>
+{% endblock %}

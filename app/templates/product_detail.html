@@ -5,6 +5,10 @@
 <p>설명: {{ product.description }}</p>
 <p>판매자: {{ product.seller.username }}</p>
 
+{% if product.seller_id != current_user.id %}
+<a href="{{ url_for('chat.chat_private', product_id=product.id, other_user_id=product.seller_id) }}">판매자와 채팅하기</a>
+{% endif %}
+
 {% if product.seller_id == current_user.id %}
 <form method="POST" action="{{ url_for('products.product_delete', product_id=product.id) }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

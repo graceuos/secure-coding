@@ -3,6 +3,8 @@
 <h2>전체 상품 목록</h2>
 <a href="{{ url_for('products.product_new') }}">+ 새 상품 등록</a>
 <a href="{{ url_for('auth.mypage') }}">마이페이지</a>
+<a href="{{ url_for('chat.chat_global') }}">전체 채팅</a>
+<a href="{{ url_for('chat.chat_list') }}">내 채팅 목록</a>
 <ul>
 {% for item in items %}
     <li>
