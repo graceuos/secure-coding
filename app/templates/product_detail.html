@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ product.title }}</h2>
+<p>가격: {{ product.price }}원</p>
+<p>설명: {{ product.description }}</p>
+<p>판매자: {{ product.seller.username }}</p>
+
+{% if product.seller_id == current_user.id %}
+<form method="POST" action="{{ url_for('products.product_delete', product_id=product.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+</form>
+{% endif %}
+
+<a href="{{ url_for('products.product_list') }}">목록으로</a>
+{% endblock %}

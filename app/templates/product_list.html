@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>전체 상품 목록</h2>
+<a href="{{ url_for('products.product_new') }}">+ 새 상품 등록</a>
+<a href="{{ url_for('auth.mypage') }}">마이페이지</a>
+<ul>
+{% for item in items %}
+    <li>
+        <a href="{{ url_for('products.product_detail', product_id=item.id) }}">
+            {{ item.title }} - {{ item.price }}원
+        </a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

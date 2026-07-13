@@ -12,9 +12,22 @@ class User(UserMixin, db.Model):
     is_active_account = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # 보안 포인트 3: 비밀번호는 절대 평문 저장 안 함. 해시(단방향 암호화)로만 저장.
     def set_password(self, raw_password):
         self.password_hash = generate_password_hash(raw_password)
 
     def check_password(self, raw_password):
         return check_password_hash(self.password_hash, raw_password)
+
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(1000), default='')
+    price = db.Column(db.Integer, nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    is_blocked = db.Column(db.Boolean, default=False)
+    report_count = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    seller = db.relationship('User', backref='products')
+    
